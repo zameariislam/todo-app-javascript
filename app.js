@@ -23,7 +23,7 @@ form.addEventListener('submit', function (e) {
 
     let inputElements = this.elements
     let data = {}
-    let isValid=true
+    let isValid = true
 
 
     for (let input of inputElements) {
@@ -31,32 +31,51 @@ form.addEventListener('submit', function (e) {
         if (input.type !== 'submit') {
             if (input.value === '') {
                 alert('please fill up all field ')
-                isValid=false
+                isValid = false
                 return
 
             }
-            data[input.name]=input.value
-        
+            data[input.name] = input.value
+
         }
 
     }
-    if(isValid){
-        data.status='incomplete'
-        data.id="AA"+Date.now()
+    if (isValid) {
+        data.status = 'incomplete'
+        data.id = "AA" + Date.now()
 
         showUI(data)
+        const tasks = getDateFromLocalStorage()
+
+        tasks.push(data)
+        setDateToLocalStorage(tasks)
+
+
 
     }
-    
+
     this.reset()
-
-
-   
-
 
 
 
 })
+
+
+window.onload = function () {
+    const tasks = getDateFromLocalStorage()
+    tasks.forEach(task => {
+        showUI(task)
+
+    })
+
+
+
+
+
+
+
+
+}
 
 
 const showUI = (data) => {
@@ -74,7 +93,9 @@ const showUI = (data) => {
         <td>${data.date}</td>
         <td>
 
-            <button id="delete">
+            <button 
+            
+             id="delete">
                 <i class="fas fa-trash-can"></i>
             </button>
             <button id="check">
@@ -88,11 +109,29 @@ const showUI = (data) => {
         </td>
     </tr>
     `
+    tr.dataset.id = data.id
     tbody.appendChild(tr)
 
 
+}
+
+
+function getDateFromLocalStorage() {
+    let tasks = []
+    const data = localStorage.getItem('tasks')
+    if (data) {
+        tasks = JSON.parse(data)
+    }
+    return tasks
 
 
 
 }
+
+function setDateToLocalStorage(tasks) {
+    localStorage.setItem('tasks', JSON.stringify(tasks))
+
+}
+
+
 
