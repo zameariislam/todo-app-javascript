@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+
+
+</head>
+
+<body>
+    <main>
+       
+            <h1 class="main_title">MY TODO LISTS</h1>
+            <h3 class="sub_title">Task Management</h3>
+            <div class="separator">
+
+            </div>
+            <form id="form">
+                <div class="task_name">
+                    <label for="name">Name :</label>
+                    <input id="name" name="name" placeholder="Add a new task" type="text">
+
+
+
+                </div>
+                <div class="task_priority">
+                    <label for="priority">Priority :</label>
+                    <select name="priority" id="priority">
+                        <option disabled selected value="">Select One</option>
+                        <option value="high">high</option>
+                        <option value="low">low</option>
+                        <option value="medium">medium</option>
+
+                    </select>
+
+
+
+
+
+                </div>
+
+                <div class="task_date">
+                    <label for="date">Date :</label>
+                    <input name="date" id="date" type="date">
+
+
+                </div>
+                <div class="task_submit">
+                    <input type="submit" value="Add new Task">
+
+                </div>
+
+
+
+
+            </form>
+            <div class="separator">
+
+            </div>
+            <h3 class="sub_title"> New Task Management</h3>
+
+            <div class="tools">
+
+
+
+                <div class="search">
+                    <label for="search">Search</label>
+                    <input id="search" name="search" placeholder="Search by name" type="text">
+
+
+
+                </div>
+                <div class="filter">
+                    <label for="filter">Filter</label>
+                    <select name="filter" id="filter">
+                        <option value="all">All</option>
+                        <option value="completed">completed</option>
+                        <option value="incompleted">incompleted</option>
+                        <option value="today">Today</option>
+                        <option value="high">high</option>
+                        <option value="medium">medium</option>
+                        <option value="low">low</option>
+
+
+                    </select>
+
+                </div>
+
+
+                <div class="sort">
+                    <label for="filter">Sort</label>
+                    <select name="filter" id="filter">
+                        <option value="newest">Newest</option>
+                        <option value="oldest">Oldest</option>
+
+
+
+                    </select>
+
+                </div>
+
+
+                <div class="by_date">
+                    <label for="by_date">Date</label>
+                    <input name="by_date" id="by_date" type="date">
+
+
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Task Name</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+                    <tr>
+                        <td>0</td>
+                        <td>Something special</td>
+                        <td> high</td>
+                        <td>
+                            complete
+                        </td>
+                        <td>31-01-31</td>
+                        <td>
+
+                            <button id="delete">
+                                <i class="fas fa-trash-can"></i>
+                            </button>
+                            <button id="check">
+                                <i class="fas fa-check"></i>
+                            </button>
+                            <button id="edit">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                            </button>
+
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+               
+
+
+
+
+
+
+       
+
+    </main>
+
+
+    <script src="./app.js"></script>
+
+</body>
+
+</html>
