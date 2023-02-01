@@ -108,6 +108,9 @@
     
     width: 50%;
  }
+ .task_submit input{
+    cursor: pointer;
+ }
 
 
 #form input,#form select,.tools input,.tools select{
