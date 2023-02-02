@@ -11,6 +11,9 @@ function $(id) {
 const form = $('form')
 const date = $('date')
 const tbody = $('tbody')
+const searchField = $('search')
+const filterField = $('filter')
+
 
 const today = new Date().toISOString().slice(0, 10)
 
@@ -157,7 +160,7 @@ tbody.addEventListener('click', function (e) {
 
     }
     else if (e.target.id == 'check') {
-        console.log('check')
+
         const tr = e.target.parentElement.parentElement
         const id = tr.dataset.id
         const tasks = getDateFromLocalStorage()
@@ -168,7 +171,7 @@ tbody.addEventListener('click', function (e) {
             return task
 
         })
-        console.log(newTasks)
+
         setDateToLocalStorage(newTasks)
         load()
 
@@ -246,7 +249,7 @@ tbody.addEventListener('click', function (e) {
 
             }
             else if (td.id == 'action') {
-                actionTd=td
+                actionTd = td
                 const preBtn = td.innerHTML
                 td.innerHTML = ' '
                 const saveBtn = document.createElement('btn')
@@ -273,19 +276,13 @@ tbody.addEventListener('click', function (e) {
                     })
                     // console.log(newTasks)
                     setDateToLocalStorage(newTasks)
-
-
-
                     // console.log(editedTask)
-
-
-
-                   nameTd.innerHTML = nameTd.children[0].value
+                    nameTd.innerHTML = nameTd.children[0].value
                     dateTd.innerHTML = dateTd.children[0].value
                     priorityTd.innerHTML = priorityTd.children[0].value
-                    actionTd.innerHTML=preBtn
+                    actionTd.innerHTML = preBtn
 
-                    console.log('Hi')
+
                 })
 
                 td.appendChild(saveBtn)
@@ -328,6 +325,31 @@ tbody.addEventListener('click', function (e) {
 
 
 })
+
+// filtering functiomality 
+searchField.addEventListener('input', (e) => {
+    console.log('hi')
+    tbody.innerHTML = ' '
+    const searchTerm = e.target.value.toLowerCase()
+
+
+    const tasks = getDateFromLocalStorage()
+    let no = 1
+    tasks.forEach(task => {
+
+        if (task.name.toLowerCase().includes(searchTerm)) {
+
+            showUI(task, no)
+            no++
+
+        }
+    })
+
+
+
+
+})
+
 
 
 
