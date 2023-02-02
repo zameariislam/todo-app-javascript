@@ -13,6 +13,10 @@ const date = $('date')
 const tbody = $('tbody')
 const searchField = $('search')
 const filterField = $('filter')
+const sortField = $('sortFilter')
+
+
+
 
 
 const today = new Date().toISOString().slice(0, 10)
@@ -331,6 +335,8 @@ tbody.addEventListener('click', function (e) {
 // search functionality 
 
 searchField.addEventListener('input', (e) => {
+    filterField.selectedIndex = 0
+
     console.log('hi')
     tbody.innerHTML = ' '
     const searchTerm = e.target.value.toLowerCase()
@@ -351,10 +357,13 @@ searchField.addEventListener('input', (e) => {
 
 
 
+
 })
 
 // filter  functionality added 
 filterField.addEventListener('change', (e) => {
+    searchField.value = ' '
+
     tbody.innerHTML = ' '
     const filterTerm = e.target.value
     console.log(filterTerm)
@@ -441,6 +450,59 @@ filterField.addEventListener('change', (e) => {
 
 
 })
+
+
+// sort by date 
+
+sortField.addEventListener('change', (e) => {
+    filterField.selectedIndex = 0
+    tbody.innerHTML = ' ';
+    const sortTerm = e.target.value
+    const tasks = getDateFromLocalStorage()
+    if (sortTerm == 'newest') {
+        tasks.sort((a, b) => {
+
+            if (new Date(a.date) > new Date(b.date)) {
+                return 1
+            }
+            else if (new Date(a.date) < new Date(b.date)) {
+                return -1
+
+            }
+            else return 0
+
+
+
+
+        })
+
+    }
+    else {
+
+        tasks.sort((a, b) => {
+
+            if (new Date(a.date) > new Date(b.date)) {
+                return -1
+            }
+            else if (new Date(a.date) < new Date(b.date)) {
+                return 1
+
+            }
+            else return 0
+
+
+
+
+        })
+
+    }
+
+    tasks.forEach((task, i) => {
+        showUI(task, i++)
+    })
+
+})
+
 
 
 
