@@ -326,7 +326,10 @@ tbody.addEventListener('click', function (e) {
 
 })
 
-// filtering functiomality 
+
+
+// search functionality 
+
 searchField.addEventListener('input', (e) => {
     console.log('hi')
     tbody.innerHTML = ' '
@@ -349,6 +352,100 @@ searchField.addEventListener('input', (e) => {
 
 
 })
+
+// filter  functionality added 
+filterField.addEventListener('change', (e) => {
+    tbody.innerHTML = ' '
+    const filterTerm = e.target.value
+    console.log(filterTerm)
+    const tasks = getDateFromLocalStorage()
+
+
+    switch (filterTerm) {
+        case 'all':
+            tasks.forEach((task, i) => {
+                showUI(task, i++)
+
+            })
+
+            console.log('all')
+
+            break;
+        case 'complete':
+            tasks.forEach((task, i) => {
+
+                if (task.status === 'complete')
+                    showUI(task, i++)
+
+            })
+
+            break;
+        case 'incomplete':
+            tasks.forEach((task, i) => {
+
+                if (task.status === 'incomplete')
+                    showUI(task, i++)
+
+            })
+
+
+            console.log('i am  incomplete')
+
+            break;
+
+        case 'high':
+            tasks.forEach((task, i) => {
+
+                if (task.priority === 'high')
+                    showUI(task, i++)
+
+            })
+
+            break;
+        case 'low':
+            tasks.forEach((task, i) => {
+
+                if (task.priority === 'low')
+                    showUI(task, i++)
+
+            })
+
+            break;
+        case 'medium':
+            tasks.forEach((task, i) => {
+
+                if (task.priority === 'medium')
+                    showUI(task, i++)
+
+            })
+
+            break;
+        case 'today':
+
+            tasks.forEach((task, i) => {
+
+                if (task.date === today)
+                    showUI(task, i++)
+
+            })
+            console.log('today')
+
+            break;
+
+        default:
+            break;
+    }
+
+
+
+
+
+})
+
+
+
+
+
 
 
 
