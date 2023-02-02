@@ -18,19 +18,19 @@ date.value = today
 
 
 const showUI = (data, index) => {
-    
+
     const tr = document.createElement('tr')
     tr.innerHTML = `
 
     <tr >
         <td>${index}</td>
-        <td>${data.name}</td>
-        <td> ${data.priority}</td>
+        <td id="name">${data.name}</td>
+        <td  id="priority" > ${data.priority}</td>
         <td>
         ${data.status}
         </td>
-        <td>${data.date}</td>
-        <td>
+        <td  id="date">${data.date}</td>
+        <td id="action">
 
             <button 
             
@@ -58,6 +58,7 @@ const showUI = (data, index) => {
 
 form.addEventListener('submit', function (e) {
     e.preventDefault();
+
 
     let inputElements = this.elements
     let data = {}
@@ -140,7 +141,8 @@ function setDateToLocalStorage(tasks) {
 
 
 
-// Action 
+// Delete,Edit and Checked Action
+
 tbody.addEventListener('click', function (e) {
     if (e.target.id == 'delete') {
 
@@ -176,9 +178,147 @@ tbody.addEventListener('click', function (e) {
 
     }
     else if (e.target.id == 'edit') {
-        console.log('edit')
+
         const tr = e.target.parentElement.parentElement
         const id = tr.dataset.id
+        const tds = tr.children;
+        let nameTd
+
+        let priorityTd
+        let dateTd
+        let actionTd
+
+
+        [...tds].forEach(td => {
+            if (td.id == 'name') {
+                nameTd = td
+
+
+                const input = document.createElement('input');
+                input.type = 'text';
+                const preName = td.textContent
+                td.innerHTML = ' '
+                input.value = preName
+                td.appendChild(input)
+
+
+            }
+            else if (td.id == 'priority') {
+                priorityTd = td
+                const select = document.createElement('select');
+                const prePriority = td.innerText
+
+
+                td.innerHTML = ' '
+                select.innerHTML = ` <option disabled selected value="">Select One</option>
+                <option value="high">high</option>
+                <option value="low">low</option>
+                <option value="medium">medium</option>`
+
+                if (prePriority === 'high') {
+                    select.selectedIndex = 1
+
+
+                }
+                else if (prePriority === 'low') {
+                    select.selectedIndex = 2
+
+
+                }
+                else if (prePriority === 'medium') {
+                    select.selectedIndex = 3
+
+
+                }
+
+
+                td.appendChild(select)
+
+            }
+            else if (td.id == 'date') {
+                dateTd = td
+                const input = document.createElement('input');
+                input.type = 'date';
+                const preDate = td.textContent
+                td.innerHTML = ' '
+                input.value = preDate
+                td.appendChild(input)
+
+            }
+            else if (td.id == 'action') {
+                actionTd=td
+                const preBtn = td.innerHTML
+                td.innerHTML = ' '
+                const saveBtn = document.createElement('btn')
+                saveBtn.innerHTML = ` <i  class="fas fa-sd-card" ></i> `
+                saveBtn.addEventListener('click', function (e) {
+
+
+                    const editedTask = {
+                        id,
+
+                        name: nameTd.children[0].value,
+                        priority: priorityTd.children[0].value,
+                        date: dateTd.children[0].value,
+                        status: 'incomplete'
+                    }
+
+                    const tasks = getDateFromLocalStorage()
+                    const newTasks = tasks.map(task => {
+                        if (task.id === id) {
+                            return editedTask
+                        }
+                        return task
+
+                    })
+                    // console.log(newTasks)
+                    setDateToLocalStorage(newTasks)
+
+
+
+                    // console.log(editedTask)
+
+
+
+                   nameTd.innerHTML = nameTd.children[0].value
+                    dateTd.innerHTML = dateTd.children[0].value
+                    priorityTd.innerHTML = priorityTd.children[0].value
+                    actionTd.innerHTML=preBtn
+
+                    console.log('Hi')
+                })
+
+                td.appendChild(saveBtn)
+
+
+
+
+
+            }
+
+
+        })
+
+
+
+
+
+        // const tasks = getDateFromLocalStorage()
+        // const targetedTask = tasks.find(task => task.id === id)
+        // console.log(targetedTask)
+
+        // form[0].value = targetedTask.name
+        // form[1].value = targetedTask.priority
+        // form[2].value = targetedTask.date
+        // const newTasks = tasks.filter(task => task.id !== id)
+        // setDateToLocalStorage(newTasks)
+
+
+
+
+
+        // load()
+
 
     }
     else {
