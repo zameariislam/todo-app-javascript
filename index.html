@@ -78,7 +78,7 @@
             <div class="filter">
                 <label for="filter">Filter</label>
                 <select name="filter" id="filter">
-                   
+
 
                     <option value="all">All</option>
                     <option value="complete">completed</option>
@@ -115,9 +115,48 @@
             </div>
         </div>
 
+        <div id="bulk_action">
+            <div class="action_group">
+                <button id="bulk_btn">Delete</button>
+                <select style="border: 2px solid black;" name="priority" id="bulk_priority">
+                    <option selected disabled>change priority</option>
+                    <option value="high">high</option>
+                    <option value="low">low</option>
+                    <option value="medium">medium</option>
+
+                </select>
+
+                <select style="border: 2px solid black;" name="bulk_status" id="bulk_status">
+                    <option selected disabled>change status</option>
+                    <option value="complete">complete</option>
+                    <option value="incomplete">incomplete</option>
+                   
+
+                </select>
+
+
+                <div id="edit" style="border: 1px solid black;" >
+                    <input placeholder="Edit Task"  id="edit_task" type="text">
+                    <select style=" border-left: 2px solid;"  name="" id="edit_section">
+                        <option value="name">name</option>
+                        <option value="date">date</option>
+                    </select>
+                </div>
+
+
+
+
+            </div>
+            <button id="bulk_dismiss">X</button>
+        </div>
+
+
         <table id="table">
             <thead>
                 <tr>
+                    <th><input type="checkbox" name="checkbox" id="all_select">
+                        <label for="all_select">all</label>
+                    </th>
                     <th>No.</th>
                     <th>Task Name</th>
                     <th>Priority</th>

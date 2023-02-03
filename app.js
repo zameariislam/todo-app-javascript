@@ -14,26 +14,308 @@ const tbody = $('tbody')
 const searchField = $('search')
 const filterField = $('filter')
 const sortField = $('sortFilter')
-
-
-
-
+const dateField = $('by_date')
+const allSelect = $('all_select')
+const checkboxes = [...document.getElementsByClassName('checkbox')]
 
 const today = new Date().toISOString().slice(0, 10)
 
 date.value = today
 
+let selectedTask = []
+
+
+function selectFunc(e) {
+    const isChecked = e.target.checked
+    const tr = e.target.parentElement.parentElement
+    const id = tr.dataset.id
+
+    if (isChecked) {
+
+
+        selectedTask.push(tr)
+        bulkActionHandler()
+    }
+    else {
+        const index =
+            selectedTask.findIndex(tr => tr.dataset.id === id)
+        if (index !== -1) {
+            selectedTask.splice(index, 1)
+        }
+        bulkActionHandler()
+
+
+    }
+    console.log(selectedTask)
+
+
+
+}
+allSelect.addEventListener('change', function (e) {
+    const isChecked = this.checked
+    selectedTask = []
+    const checkboxes = [...document.getElementsByClassName('checkbox')]
+    if (isChecked) {
+        checkboxes.forEach(box => {
+            box.checked = true
+            selectedTask.push(box.parentElement.parentElement)
+
+        })
+        bulkActionHandler()
+    }
+    else {
+        checkboxes.forEach(box => {
+            box.checked = false
+
+
+        })
+        bulkActionHandler()
+
+    }
+    console.log(selectedTask)
+
+
+
+})
+
+const bulkActionHandler = () => {
+
+
+    if (selectedTask.length > 0) {
+        $('bulk_action').style.display = 'flex'
+
+    }
+    else {
+        $('bulk_action').style.display = 'none'
+    }
+
+
+}
+
+$('bulk_dismiss').addEventListener('click', function (e) {
+    selectedTask = []
+    bulkActionHandler()
+    const checkboxes = [...document.getElementsByClassName('checkbox')]
+    checkboxes.forEach(box => {
+        box.checked = false
+
+    })
+    allSelect.checked = false
+    $('bulk_priority').selectedIndex=0
+    $('bulk_status').selectedIndex=0
+    $('edit_section').selectedIndex=0
+    $("edit_task").value=' '
+    $("edit_task").type='text'
+
+    console.log(selectedTask)
+
+
+})
+
+$('bulk_btn').addEventListener('click', function (e) {
+    let tasks = getDateFromLocalStorage()
+    console.log(selectedTask)
+
+
+    selectedTask.forEach(tr => {
+        const id = tr.dataset.id
+
+        tasks = tasks.filter(task => task.id !== id)
+
+
+
+        tr.remove()
+
+
+
+
+    })
+    setDateToLocalStorage(tasks)
+    $('bulk_action').style.display = 'none'
+    allSelect.checked = false
+    console.log(selectedTask)
+
+
+
+})
+
+$('bulk_priority').addEventListener('change', function (e) {
+
+    let tasks = getDateFromLocalStorage()
+
+    selectedTask.forEach(tr => {
+        [...tr.children].forEach(td => {
+            if (td.id == 'priority') {
+                td.textContent = e.target.value
+
+
+
+            }
+
+
+        })
+        tasks = tasks.map((task) => {
+            if (task.id == tr.dataset.id) {
+                return { ...task, priority: e.target.value }
+            }
+            else {
+                return task
+            }
+
+        })
+
+
+
+    })
+    setDateToLocalStorage(tasks)
+
+})
+
+$("bulk_status").addEventListener('change', function (e) {
+
+    let tasks = getDateFromLocalStorage()
+
+    selectedTask.forEach(tr => {
+        [...tr.children].forEach(td => {
+            if (td.id == 'status') {
+                td.textContent = e.target.value
+
+
+
+            }
+
+
+        })
+        tasks = tasks.map((task) => {
+            if (task.id == tr.dataset.id) {
+                return { ...task, status: e.target.value }
+            }
+            else {
+                return task
+            }
+
+        })
+
+
+
+    })
+    setDateToLocalStorage(tasks)
+
+})
+
+$('edit_section').onchange = function (e) {
+    const value = e.target.value
+    if (value == 'date') {
+        $('edit_task').value = ' '
+        $('edit_task').type = 'date'
+
+
+    }
+
+    else {
+        $('edit_task').value = ' '
+        $('edit_task').type = 'text'
+
+
+    }
+}
+
+$('edit_task').oninput = function (e) {
+    let tasks = getDateFromLocalStorage()
+    if (this.type == 'text') {
+
+        selectedTask.forEach(tr => {
+            [...tr.children].forEach(td => {
+                if (td.id == 'name') {
+                    td.textContent = e.target.value
+
+
+
+                }
+
+
+            })
+            tasks = tasks.map((task) => {
+                if (task.id == tr.dataset.id) {
+                    return { ...task, name: e.target.value }
+                }
+                else {
+                    return task
+                }
+
+            })
+
+
+
+        })
+
+
+
+
+
+    }
+    else {
+        selectedTask.forEach(tr => {
+            [...tr.children].forEach(td => {
+                if (td.id == 'date') {
+                    td.textContent = e.target.value
+
+
+
+                }
+
+
+            })
+            tasks = tasks.map((task) => {
+                if (task.id == tr.dataset.id) {
+                    return { ...task, date: e.target.value }
+                }
+                else {
+                    return task
+                }
+
+            })
+
+
+
+        })
+
+
+    }
+    setDateToLocalStorage(tasks)
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 const showUI = (data, index) => {
-
     const tr = document.createElement('tr')
-    tr.innerHTML = `
+    const check = document.createElement('input')
+    check.type = 'checkbox'
+    check.value = data.id
+    check.className = 'checkbox'
+    check.addEventListener('change', selectFunc)
 
-    <tr >
+
+
+    tr.innerHTML = `
+ 
+         <td  id="check"></td>
         <td>${index}</td>
         <td id="name">${data.name}</td>
         <td  id="priority" > ${data.priority}</td>
-        <td>
+        <td id="status">
         ${data.status}
         </td>
         <td  id="date">${data.date}</td>
@@ -53,9 +335,11 @@ const showUI = (data, index) => {
 
 
         </td>
-    </tr>
+   
     `
     tr.dataset.id = data.id
+    tr.firstElementChild.append(check)
+
     tbody.appendChild(tr)
 
 
@@ -102,6 +386,7 @@ form.addEventListener('submit', function (e) {
     }
 
     this.reset()
+    $('date').value = today
 
 
 
@@ -463,10 +748,10 @@ sortField.addEventListener('change', (e) => {
         tasks.sort((a, b) => {
 
             if (new Date(a.date) > new Date(b.date)) {
-                return 1
+                return -1
             }
             else if (new Date(a.date) < new Date(b.date)) {
-                return -1
+                return 1
 
             }
             else return 0
@@ -482,10 +767,10 @@ sortField.addEventListener('change', (e) => {
         tasks.sort((a, b) => {
 
             if (new Date(a.date) > new Date(b.date)) {
-                return -1
+                return 1
             }
             else if (new Date(a.date) < new Date(b.date)) {
-                return 1
+                return -1
 
             }
             else return 0
@@ -502,6 +787,32 @@ sortField.addEventListener('change', (e) => {
     })
 
 })
+
+// search by date 
+
+dateField.addEventListener('change', (e) => {
+    sortField.selectedIndex = 0
+
+    filterField.selectedIndex = 0
+    tbody.innerHTML = ' ';
+    const dateTerm = e.target.value
+    console.log(new Date(dateTerm))
+    const tasks = getDateFromLocalStorage()
+
+    tasks.forEach((task, i) => {
+
+        if ((task.date) === (dateTerm)) {
+            console.log('I am from date')
+            showUI(task, i++)
+
+        }
+
+    })
+
+    dateField.value = ' '
+})
+
+
 
 
 
